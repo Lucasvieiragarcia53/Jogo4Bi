@@ -691,7 +691,7 @@ PrefabInstance:
       objectReference: {fileID: 1793866287}
     - target: {fileID: 3252963226242736045, guid: 311a8c33ae9f4f84da96ec518d71ad3d, type: 3}
       propertyPath: playerLayer.m_Bits
-      value: 1
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 4245594640385624763, guid: 311a8c33ae9f4f84da96ec518d71ad3d, type: 3}
       propertyPath: m_Name
