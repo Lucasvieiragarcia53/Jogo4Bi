@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float speed = 3f;         // Velocidade do inimigo
+    public float speed = 3f;           // Velocidade do inimigo
     public float rangeVisao = 5f;    // Alcance para detectar o player
     public int dano = 1;            // Dano que causa ao encostar
 
