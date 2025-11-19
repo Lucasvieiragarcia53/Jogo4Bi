@@ -38,8 +38,6 @@ public class EnemyControllerPhase2 : MonoBehaviour
             // Se sair 5, soma; caso contrário, zera o contador
             if (randomNum == 5)
                 specialCount++;
-            else
-                specialCount = 0;
 
             // Quando sair três 5 seguidos, ativa o feixe
             if (specialCount >= 3)
