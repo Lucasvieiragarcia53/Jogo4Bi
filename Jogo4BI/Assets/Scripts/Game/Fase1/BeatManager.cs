@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro; // Se estiver usando TextMeshPro, caso contrário, use UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class BeatManager : MonoBehaviour
 {
+
     [SerializeField] private float _bpm;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Intervals[] _intervals;
@@ -47,6 +49,11 @@ public class BeatManager : MonoBehaviour
         {
             float sampledTime = (_audioSource.timeSamples / (_audioSource.clip.frequency * interval.GetIntervalLength(_bpm)));
             interval.CheckForIntervals(sampledTime);
+        }
+
+        if (_audioSource != null && !_audioSource.isPlaying)
+        {
+            LoadNextLevel();
         }
     }
 
@@ -111,6 +118,15 @@ public class BeatManager : MonoBehaviour
         UpdateUI();
     }
 
+    // Novo: Retorna o tempo em segundos até o próximo beat
+    public float GetTimeToNextBeat()
+    {
+        float beatLength = 60f / _bpm; // Tempo por beat em segundos
+        float currentTime = _audioSource.time; // Tempo atual da música
+        float nextBeatTime = Mathf.Ceil(currentTime / beatLength) * beatLength; // Próximo beat
+        return nextBeatTime - currentTime; // Tempo restante
+    }
+
     // Atualizar a UI do placar
     private void UpdateUI()
     {
@@ -154,6 +170,17 @@ public class BeatManager : MonoBehaviour
         if (_hitQualityText != null)
             _hitQualityText.text = "";
     }
+
+    void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+    }
+
 
     [System.Serializable]
     public class Intervals

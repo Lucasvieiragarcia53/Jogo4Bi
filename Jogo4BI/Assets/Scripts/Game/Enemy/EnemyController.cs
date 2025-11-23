@@ -6,11 +6,14 @@ public class EnemyController : MonoBehaviour
 {
     public float speed = 3f;           // Velocidade do inimigo
     public float rangeVisao = 5f;    // Alcance para detectar o player
-    public int dano = 1;            // Dano que causa ao encostar
+    public int dano = 1;            // Dano que causa ao encostar (não usado diretamente, mas pode ser usado para múltiplas vidas se quiser)
 
     private Transform player;        // Referência ao player
     private Rigidbody2D rb;          // Rigidbody do inimigo
     private Vector2 direcao;         // Direção de movimento
+
+    // Novo: Referência ao Placar (arraste o objeto Placar no Inspector)
+    public Placar placar;
 
     void Start()
     {
@@ -55,11 +58,11 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player playerScript = collision.gameObject.GetComponent<Player>();
-            if (playerScript != null)
+            // Chamar o método no Placar para perder uma vida
+            if (placar != null)
             {
-                playerScript.vidas -= dano;
-                Debug.Log("Inimigo causou dano! Vidas do player: " + playerScript.vidas);
+                placar.PerderVida();
+                Debug.Log("Inimigo causou dano! Vidas reduzidas no placar.");
             }
         }
     }

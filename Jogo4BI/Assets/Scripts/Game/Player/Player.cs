@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int vidas = 5;
     private Rigidbody2D rb;
     private float horizontalInput;
     public float speed;
@@ -19,6 +18,12 @@ public class Player : MonoBehaviour
     public LayerMask enemyLayer; // Layer dos inimigos (configure no Inspector)
     public Transform attackPoint; // Ponto de origem do ataque (ex.: frente do player)
 
+    // Campo para animação de corrida (sem bounce)
+    public Animator animator; // Referência ao Animator do player 
+
+    // Novo: Referência ao Placar (arraste o objeto Placar no Inspector)
+    public Placar placar;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -28,6 +33,13 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("BeatManager não encontrado na cena!");
         }
+
+        // Inicialização para animação
+        if (animator != null)
+        {
+            animator.SetBool("IsRunning", false); // Começa parado
+            animator.SetBool("IsGrounded", true); // Começa no chão
+        }
     }
 
     void Update()
@@ -35,31 +47,47 @@ public class Player : MonoBehaviour
         move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         horizontalInput = Input.GetAxis("Horizontal");
 
+        // Atualizar animação de corrida baseada no movimento horizontal
+        if (animator != null)
+        {
+            animator.SetBool("IsRunning", Mathf.Abs(horizontalInput) > 0.1f); // Ativa se estiver se movendo
+            animator.SetBool("IsGrounded", isGrounded); // Atualiza se está no chão
+        }
+
         if (Input.GetKeyDown(KeyCode.J))
         {
-            jump = true;
-            BeatManager.HitQuality quality = Bm.GetHitQuality();
-            if (Bm != null && Bm.IsOnBeat())
+            if (isGrounded) // Só permite pulo se estiver no chão
             {
-                Bm.IncrementCombo();
-                Bm.AddScore(quality); // Passa a qualidade para AddScore
-            }
-            else
-            {
-                Bm.ResetCombo();
+                jump = true;
+                // Ativar trigger de animação de pulo
+                if (animator != null)
+                {
+                    animator.SetTrigger("Jump"); // Chama a animação de pulo via trigger
+                }
+                BeatManager.HitQuality quality = Bm.GetHitQuality();
+                if (Bm != null && Bm.IsOnBeat())
+                {
+                    Bm.IncrementCombo();
+                    Bm.AddScore(quality); // Passa a qualidade para AddScore
+                }
+                else
+                {
+                    Bm.ResetCombo();
+                }
             }
         }
 
-        // Novo: Verificar input para ataque
-        if (Input.GetKeyDown(KeyCode.K))
+        // Ataque só se estiver no beat (similar ao pulo)
+        if (Input.GetKeyDown(KeyCode.K) && Bm != null && Bm.IsOnBeat())
         {
-                Attack();
+            Attack();
         }
     }
 
     void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce * Time.fixedDeltaTime);
+        // Corrigido: Aplicar jumpForce diretamente (sem multiplicar por Time.fixedDeltaTime, pois isso reduz o pulo drasticamente)
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
     void Move()
@@ -77,51 +105,88 @@ public class Player : MonoBehaviour
         jump = false;
     }
 
-    // Novo método: Ataque
+    // Método de Ataque (combo reseta se miss OU se não acertar inimigo)
     void Attack()
     {
-        // Detectar inimigos na área de ataque usando OverlapCircleAll
+        // Ativar trigger de animação de ataque
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack"); // Chama a animação de ataque via trigger
+        }
+
+        // Obter qualidade do hit primeiro
+        BeatManager.HitQuality quality = Bm.GetHitQuality();
+
+        // Detectar inimigos na área de ataque
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        bool enemyHit = false; // Flag para saber se acertou algum inimigo
 
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy.CompareTag("Enemy"))
             {
-                // Verificar se o ataque está no ritmo
-                BeatManager.HitQuality quality = Bm.GetHitQuality();
-                if (quality != BeatManager.HitQuality.Miss)
-                {
-                    Bm.IncrementCombo();
-                    Bm.AddScore(quality); // Passa a qualidade para AddScore
-                    Destroy(enemy.gameObject);
-                }
-                else
-                {
-                    Bm.ResetCombo();
-                    Destroy(enemy.gameObject); 
-                }
+                enemyHit = true;
+                Destroy(enemy.gameObject, 0.1f); // Destrói o inimigo
             }
+        }
+
+        // Lógica de combo e score baseada na qualidade e se acertou inimigo
+        if (quality != BeatManager.HitQuality.Miss && enemyHit)
+        {
+            Bm.IncrementCombo();
+            Bm.AddScore(quality);
+        }
+        else
+        {
+            Bm.ResetCombo(); // Reseta combo se miss OU se não acertar inimigo
         }
     }
 
-    // Novo: Desenhar gizmo para visualizar o alcance do ataque (no Editor)
+    // Desenhar gizmo para visualizar o alcance do ataque (no Editor)
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    // Integrado: Detectar colisão com chão (para isGrounded) e inimigos
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            // Resetar trigger de pulo se necessário (opcional, para evitar loops)
+            if (animator != null)
+            {
+                animator.ResetTrigger("Jump");
+            }
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Chamar o método no Placar para perder uma vida
+            if (placar != null)
+            {
+                placar.PerderVida();
+            }
+
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Box"))
+        {
+            if (placar != null)
+            {
+                placar.PerderVida();
+            }
+
+            
+            Destroy(collision.gameObject);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    // Novo: Detectar saída de colisão com o chão
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
         }
