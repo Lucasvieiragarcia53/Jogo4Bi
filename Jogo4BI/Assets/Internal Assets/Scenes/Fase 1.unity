@@ -2004,7 +2004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 893923741f99d0c46813879cd9697c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidas: 1000
+  vidas: 5
   vidastxt: {fileID: 145392686}
   player: {fileID: 342703177}
 --- !u!114 &1488865062
@@ -2494,6 +2494,10 @@ PrefabInstance:
       propertyPath: Loop
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3296646442204023727, guid: 3bae95dbdf0fc094cb5fb7d54ef0d8fc, type: 3}
+      propertyPath: m_Volume
+      value: 0.768
+      objectReference: {fileID: 0}
     - target: {fileID: 4887108796729745662, guid: 3bae95dbdf0fc094cb5fb7d54ef0d8fc, type: 3}
       propertyPath: m_Name
       value: MusicTest
@@ -2723,7 +2727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7989424909734735103, guid: 631639c107ddbce41a691a4117ca269c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.31
+      value: -14.5
       objectReference: {fileID: 0}
     - target: {fileID: 7989424909734735103, guid: 631639c107ddbce41a691a4117ca269c, type: 3}
       propertyPath: m_LocalPosition.y
