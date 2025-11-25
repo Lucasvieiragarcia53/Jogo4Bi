@@ -637,9 +637,9 @@ MonoBehaviour:
   _scoreText: {fileID: 1787188044}
   _comboText: {fileID: 1644650360}
   _hitQualityText: {fileID: 716340296}
-  _perfectTolerance: 0.07
-  _goodTolerance: 0.2
-  _okTolerance: 0.3
+  _perfectTolerance: 0.09
+  _goodTolerance: 0.3
+  _okTolerance: 0.4
 --- !u!4 &189489097
 Transform:
   m_ObjectHideFlags: 0
@@ -1905,7 +1905,7 @@ MonoBehaviour:
   fastLayer:
     tileA: {fileID: 314350698}
     tileB: {fileID: 398359267}
-    speed: 6
+    speed: 8
     pixelSnap: 0
     pixelsPerUnit: 100
     followPlayer: 0
@@ -1919,7 +1919,7 @@ MonoBehaviour:
   slowLayer:
     tileA: {fileID: 1028952524}
     tileB: {fileID: 310890804}
-    speed: 3
+    speed: 5
     pixelSnap: 0
     pixelsPerUnit: 100
     followPlayer: 0
@@ -1933,7 +1933,7 @@ MonoBehaviour:
   groundLayer:
     tileA: {fileID: 145058505}
     tileB: {fileID: 68242312}
-    speed: 8
+    speed: 10
     pixelSnap: 0
     pixelsPerUnit: 100
     followPlayer: 0
@@ -2496,7 +2496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3296646442204023727, guid: 3bae95dbdf0fc094cb5fb7d54ef0d8fc, type: 3}
       propertyPath: m_Volume
-      value: 0.768
+      value: 0.697
       objectReference: {fileID: 0}
     - target: {fileID: 4887108796729745662, guid: 3bae95dbdf0fc094cb5fb7d54ef0d8fc, type: 3}
       propertyPath: m_Name

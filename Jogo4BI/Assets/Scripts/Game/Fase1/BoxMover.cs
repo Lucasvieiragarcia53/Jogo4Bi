@@ -11,10 +11,6 @@ public class BoxMover : MonoBehaviour
     {
         // Encontrar o player
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (player == null)
-        {
-            Debug.LogError("Player não encontrado!");
-        }
     }
 
     void Update()
@@ -23,14 +19,14 @@ public class BoxMover : MonoBehaviour
 
         // Calcular direção horizontal para o player
         Vector3 direction = player.position - transform.position;
-        direction.y = 0; // Ignorar movimento vertical, apenas horizontal
+        direction.y = 0; // Ignorar movimento vertical
         direction = direction.normalized; // Normalizar para direção unitária
 
         // Mover a caixa na direção calculada
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
-        // Verificar se o player pulou sobre a caixa (posição Y do player > Y da caixa + margem, e próximo em X)
-        float margin = 0.5f; // Margem para detectar pulo (ajuste conforme tamanho da caixa/player)
+        // Verificar se o player pulou sobre a caixa 
+        float margin = 0.5f; // Margem para detectar pulo
         if (player.position.y > transform.position.y + margin && Mathf.Abs(player.position.x - transform.position.x) < 1f)
         {
             // Destruir a caixa quando o player pular por ela

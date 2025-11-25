@@ -7,29 +7,28 @@ using UnityEngine.SceneManagement;
 
 public class BeatManager : MonoBehaviour
 {
+   
+    [SerializeField] private float _bpm; // Batidas por minuto da música
+    [SerializeField] private AudioSource _audioSource; // Fonte de áudio para tocar a música
+    [SerializeField] private Intervals[] _intervals; // Array de intervalos para triggers baseados em beats
 
-    [SerializeField] private float _bpm;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private Intervals[] _intervals;
+    // Novos campos para sistema de pontuação e combo
+    [SerializeField] private int _score; // Pontuação total do jogador
+    [SerializeField] private int _combo; // Contador de combo
+    [SerializeField] private TMP_Text _scoreText; 
+    [SerializeField] private TMP_Text _comboText; 
+    [SerializeField] private TMP_Text _hitQualityText;
 
-    // Novos campos para pontuação e combo
-    [SerializeField] private int _score;
-    [SerializeField] private int _combo;
-    [SerializeField] private TMP_Text _scoreText; // Ou Text se não usar TMP
-    [SerializeField] private TMP_Text _comboText; // Ou Text se não usar TMP
-    [SerializeField] private TMP_Text _hitQualityText; // Novo: Texto para mostrar a qualidade do hit
 
-    // Tolerâncias para diferentes qualidades de hit (ajuste conforme necessário)
-    [SerializeField] private float _perfectTolerance = 0.05f; // Muito preciso
-    [SerializeField] private float _goodTolerance = 0.1f;     // Médio
-    [SerializeField] private float _okTolerance = 0.2f;       // Largo
+    [SerializeField] private float _perfectTolerance = 0.05f;
+    [SerializeField] private float _goodTolerance = 0.1f;    
+    [SerializeField] private float _okTolerance = 0.2f;       
 
-    private float _currentBeat;
+    private float _currentBeat; // Beat atual calculado baseado no tempo da música
 
-    // Enum para qualidade do hit
     public enum HitQuality { Miss, Ok, Good, Perfect }
 
-    // Novo: Getter para _currentBeat
+    //público para acessar o beat atual de fora da classe
     public float GetCurrentBeat()
     {
         return _currentBeat;
@@ -37,32 +36,39 @@ public class BeatManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI();
+        UpdateUI(); //
     }
 
     private void Update()
     {
-        // Calcular o beat atual baseado no tempo da música
+        // Calcula o beat atual baseado nos samples de áudio e BPM
+        // Fórmula: beat = (tempo em samples / frequência) / (60 / BPM)
         _currentBeat = (_audioSource.timeSamples / (_audioSource.clip.frequency * (60f / _bpm)));
 
+        // Verifica cada intervalo definido para triggers
         foreach (Intervals interval in _intervals)
         {
+            // Calcula o tempo amostrado para o intervalo específico
             float sampledTime = (_audioSource.timeSamples / (_audioSource.clip.frequency * interval.GetIntervalLength(_bpm)));
-            interval.CheckForIntervals(sampledTime);
+            interval.CheckForIntervals(sampledTime); // Verifica se deve disparar o evento
         }
 
+        // Se a música terminou, carrega a próxima cena
         if (_audioSource != null && !_audioSource.isPlaying)
         {
-            LoadNextLevel();
+            SceneManager.LoadScene("Fase 2");;
         }
     }
 
-    // Modificado: Retorna a qualidade do hit em vez de apenas bool
+    // Método para obter a qualidade do hit atual
     public HitQuality GetHitQuality()
     {
+        // Calcula a fração do beat atual
         float beatFraction = _currentBeat - Mathf.Floor(_currentBeat);
-        float distanceToBeat = Mathf.Min(beatFraction, 1f - beatFraction); // Distância ao beat mais próximo
+        // Distância ao beat mais próximo
+        float distanceToBeat = Mathf.Min(beatFraction, 1f - beatFraction);
 
+        // Determina a qualidade baseada nas tolerâncias
         if (distanceToBeat <= _perfectTolerance)
             return HitQuality.Perfect;
         else if (distanceToBeat <= _goodTolerance)
@@ -73,16 +79,16 @@ public class BeatManager : MonoBehaviour
             return HitQuality.Miss;
     }
 
-    // Método para verificar se uma ação está "no ritmo" (mantido para compatibilidade, mas use GetHitQuality())
+    // Método para verificar se está no ritmo
     public bool IsOnBeat()
     {
         return GetHitQuality() != HitQuality.Miss;
     }
 
-    // Modificado: Adicionar pontos baseado na qualidade do hit
+    // Adiciona pontos à pontuação baseada na qualidade do hit
     public void AddScore(HitQuality quality)
     {
-        int basePoints = 0;
+        int basePoints = 0; // Pontos base dependendo da qualidade
         switch (quality)
         {
             case HitQuality.Perfect:
@@ -99,44 +105,50 @@ public class BeatManager : MonoBehaviour
                 break;
         }
 
-        _score += basePoints * (_combo > 0 ? _combo : 1); // Multiplica pelo combo, mínimo 1
-        UpdateUI();
-        ShowHitQuality(quality); // Mostra a qualidade na UI
+        // Adiciona pontos multiplicados pelo combo
+        _score += basePoints * (_combo > 0 ? _combo : 1);
+        UpdateUI(); 
+        ShowHitQuality(quality); 
     }
 
-    // Método para incrementar o combo
+    // Incrementa o combo (chamado em hits bem-sucedidos)
     public void IncrementCombo()
     {
         _combo++;
         UpdateUI();
     }
 
-    // Método para resetar o combo (quando erra)
+    // Reseta o combo
     public void ResetCombo()
     {
         _combo = 0;
         UpdateUI();
     }
 
-    // Novo: Retorna o tempo em segundos até o próximo beat
+    // Retorna o tempo em segundos até o próximo beat
     public float GetTimeToNextBeat()
     {
-        float beatLength = 60f / _bpm; // Tempo por beat em segundos
+        float beatLength = 60f / _bpm; // Duração de um beat em segundos
         float currentTime = _audioSource.time; // Tempo atual da música
-        float nextBeatTime = Mathf.Ceil(currentTime / beatLength) * beatLength; // Próximo beat
+        // Calcula o tempo do próximo beat
+        float nextBeatTime = Mathf.Ceil(currentTime / beatLength) * beatLength;
         return nextBeatTime - currentTime; // Tempo restante
     }
 
-    // Atualizar a UI do placar
+    // Atualiza os textos da UI com pontuação e combo atuais
     private void UpdateUI()
     {
         if (_scoreText != null)
+        {
             _scoreText.text = "Pontos: " + _score.ToString();
+        }
         if (_comboText != null)
+        {
             _comboText.text = "Combo: " + _combo.ToString();
+        }
     }
 
-    // Novo: Mostrar a qualidade do hit na UI
+    // Exibe a qualidade do hit na UI por um curto período
     private void ShowHitQuality(HitQuality quality)
     {
         if (_hitQualityText != null)
@@ -158,12 +170,12 @@ public class BeatManager : MonoBehaviour
                     break;
             }
             _hitQualityText.text = qualityText;
-            // Opcional: Esconder após alguns segundos
+            // Inicia corrotina para esconder o texto
             StartCoroutine(HideHitQualityText());
         }
     }
 
-    // Corrotina para esconder o texto de qualidade após 1 segundo
+    // Corrotina para esconder o texto da qualidade
     private IEnumerator HideHitQualityText()
     {
         yield return new WaitForSeconds(1f);
@@ -171,35 +183,27 @@ public class BeatManager : MonoBehaviour
             _hitQualityText.text = "";
     }
 
-    void LoadNextLevel()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-    }
-
-
+    // Classe para definir intervalos de triggers baseados em beats
     [System.Serializable]
     public class Intervals
     {
-        [SerializeField] private float _steps;
-        [SerializeField] private UnityEvent _trigger;
-        private int _LastInterval;
+        [SerializeField] private float _steps; // Número de passos por beat
+        [SerializeField] private UnityEvent _trigger; // Evento Unity a ser disparado no intervalo
+        private int _LastInterval; // Último intervalo verificado
 
+        // Calcula o comprimento do intervalo em segundos baseado no BPM
         public float GetIntervalLength(float bpm)
         {
             return 60f / (bpm * _steps);
         }
 
+        // Verifica se o intervalo mudou e dispara o evento se necessário
         public void CheckForIntervals(float interval)
         {
             if (Mathf.FloorToInt(interval) != _LastInterval)
             {
                 _LastInterval = Mathf.FloorToInt(interval);
-                _trigger.Invoke();
+                _trigger.Invoke(); // Dispara o evento Unity
             }
         }
     }
