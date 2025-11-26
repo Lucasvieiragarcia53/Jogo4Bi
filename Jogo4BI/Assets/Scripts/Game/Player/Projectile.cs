@@ -11,7 +11,8 @@ public class Projectile : MonoBehaviour
     private Vector2 direction;
     private Rigidbody2D rb;
 
-    public float rotationOffset = -90f; // <<< CORREÇÃO AQUI
+    public float rotationOffset = -90f;
+    
 
     void Awake()
     {

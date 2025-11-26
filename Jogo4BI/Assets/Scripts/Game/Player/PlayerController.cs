@@ -86,10 +86,18 @@ public class PlayerController : MonoBehaviour
     void Shoot()
     {
         fireTimer += Time.deltaTime;
+        int oneshot = 1;
 
-        if (Input.GetKey(KeyCode.Space) && fireTimer >= fireRate)
+        int bulletmax = GameObject.FindGameObjectsWithTag("Bullet").Length;
+
+        if (Input.GetKeyDown(KeyCode.Space) && fireTimer >= fireRate)
         {
             GameObject b = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            if(bulletmax < oneshot)
+            {
+                Destroy(bulletPrefab);
+            }
+
 
             // Envia a direção da última tecla apertada
             b.GetComponent<Projectile>().SetDirection(lastDir);
@@ -97,4 +105,6 @@ public class PlayerController : MonoBehaviour
             fireTimer = 0f;
         }
     }
+
+    
 }

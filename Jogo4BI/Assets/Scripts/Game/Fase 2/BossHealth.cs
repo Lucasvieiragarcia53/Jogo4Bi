@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class BossHealth : MonoBehaviour
 {
     [Header("Configurações de Vida")]
-    public float vidaMaxima = 1000f;   // Vida total do boss
+    public float vidaMaxima = 1000f; 
     private float vidaAtual;
 
     [Header("Interface (UI)")]
-    public Slider barraDeVida;         // Slider (barra de HP)
-    public Image barraDeVidaImagem;    // Alternativa: usar imagem em vez do Slider
-    public Gradient corDaBarra;        // Gradiente de cor da barra (verde → vermelho)
+    public Slider barraDeVida;         
+    public Image barraDeVidaImagem;    
+    public Gradient corDaBarra;        
+    public Bullet bullet;
 
     void Start()
     {
@@ -27,17 +28,26 @@ public class BossHealth : MonoBehaviour
         AtualizarCorDaBarra();
     }
 
-    public void ReceberDano(float dano)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        vidaAtual -= dano;
-        vidaAtual = Mathf.Clamp(vidaAtual, 0, vidaMaxima);
-
-
-        AtualizarBarra();
-
-        if (vidaAtual <= 0)
+        if (collision.CompareTag("Bullet"))
         {
-            Morrer();
+            Bullet bullet = collision.GetComponent<Bullet>();
+
+            if (bullet != null)
+            {
+                float dano = bullet.dano;
+
+                vidaAtual -= dano;
+                vidaAtual = Mathf.Clamp(vidaAtual, 0, vidaMaxima);
+
+                AtualizarBarra();
+
+                if (vidaAtual <= 0)
+                {
+                    Morrer();
+                }
+            }
         }
     }
 
@@ -61,7 +71,6 @@ public class BossHealth : MonoBehaviour
 
     void Morrer()
     {
-
         Debug.Log("O chefão foi derrotado!");
         Destroy(gameObject);
     }
