@@ -27,6 +27,26 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 680
+--- !u!114 &-5954322641402458738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: ../FMOD/SonsJogo/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638997644536068584
+  FileSizes:
+  - Name: Desktop
+    Value: 4378720
+  Exists: 1
 --- !u!114 &-3810887889988808544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +101,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 470
+--- !u!114 &-1541132634672626625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyDie
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyDie
+  Guid:
+    Data1: 1794721798
+    Data2: 1320188921
+    Data3: -2079963507
+    Data4: -1667078531
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 680
+--- !u!114 &-156622221703394927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Tiro
+  m_EditorClassIdentifier: 
+  Path: event:/Tiro
+  Guid:
+    Data1: 295440794
+    Data2: 1100948001
+    Data3: 1190533282
+    Data4: 747589612
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 620
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,29 +168,35 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 8942851184821121307}
-  - {fileID: 724860302790901769}
+  - {fileID: 4761065929065857058}
+  - {fileID: -5954322641402458738}
   EditorEvents:
-  - {fileID: -6878221207297992255}
-  - {fileID: -3810887889988808544}
-  - {fileID: -1922038566481105839}
-  - {fileID: 3483450115128567131}
+  - {fileID: -1541132634672626625}
+  - {fileID: 8485733927449719269}
+  - {fileID: 2555028442655999555}
+  - {fileID: -156622221703394927}
+  - {fileID: 984415301751364575}
+  - {fileID: 1891612129317749120}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 724860302790901769}
+  - {fileID: -5954322641402458738}
   StringsBanks:
-  - {fileID: 8942851184821121307}
+  - {fileID: 4761065929065857058}
   cacheVersion: 131857
-  cacheTime: 638997593613835455
+  cacheTime: 638997644536078555
   SerializableEventsDict:
   - key: event:/EnemyDie
     index: 0
-  - key: event:/Knife
-    index: 1
   - key: event:/Jump
+    index: 1
+  - key: event:/Knife
     index: 2
   - key: event:/Tiro
     index: 3
+  - key: event:/Energy Shoot
+    index: 4
+  - key: event:/Music
+    index: 5
 --- !u!114 &724860302790901769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +217,87 @@ MonoBehaviour:
   - Name: Desktop
     Value: 45952
   Exists: 1
+--- !u!114 &984415301751364575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Energy Shoot
+  m_EditorClassIdentifier: 
+  Path: event:/Energy Shoot
+  Guid:
+    Data1: -115579857
+    Data2: 1186360573
+    Data3: -1545491282
+    Data4: -779149258
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 122
+--- !u!114 &1891612129317749120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music
+  m_EditorClassIdentifier: 
+  Path: event:/Music
+  Guid:
+    Data1: -62427735
+    Data2: 1131740481
+    Data3: 1409882802
+    Data4: 145266566
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 370248
+--- !u!114 &2555028442655999555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Knife
+  m_EditorClassIdentifier: 
+  Path: event:/Knife
+  Guid:
+    Data1: 2063839824
+    Data2: 1307548365
+    Data3: 50092933
+    Data4: 97453769
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 320
 --- !u!114 &3483450115128567131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +325,53 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 620
+--- !u!114 &4761065929065857058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: ../FMOD/SonsJogo/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638997644536078555
+  FileSizes:
+  - Name: Desktop
+    Value: 976
+  Exists: 1
+--- !u!114 &8485733927449719269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Jump
+  m_EditorClassIdentifier: 
+  Path: event:/Jump
+  Guid:
+    Data1: -991754705
+    Data2: 1284076065
+    Data3: -638302557
+    Data4: -1974116744
+  Banks:
+  - {fileID: -5954322641402458738}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 470
 --- !u!114 &8942851184821121307
 MonoBehaviour:
   m_ObjectHideFlags: 0

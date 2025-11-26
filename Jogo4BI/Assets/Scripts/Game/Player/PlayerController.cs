@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     private Bullet bullet;
     public Placar placar;
+    private Projectile proj;
 
     void Update()
     {
@@ -105,8 +106,11 @@ public class PlayerController : MonoBehaviour
 
 
             // Envia a direção da última tecla apertada
-            b.GetComponent<Projectile>().SetDirection(lastDir);
-
+            // b.GetComponent<Projectile>().SetDirection(lastDir);
+            if(proj != null)
+            {
+            proj.GetComponent<Rigidbody2D>().velocity = lastDir.normalized * 10f;
+            }
             fireTimer = 0f;
         }
     }
@@ -121,6 +125,14 @@ public class PlayerController : MonoBehaviour
                 placar.PerderVida();
             }
             Destroy(other.gameObject);
+        }
+        if (other.CompareTag("Special"))
+        {
+            if (placar != null)
+            {
+                placar.PerderVidaEspecial();
+            }
+            
         }
     }    
 }

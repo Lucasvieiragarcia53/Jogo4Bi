@@ -35,4 +35,16 @@ public class Placar : MonoBehaviour
             SceneManager.LoadScene("Game Over"); 
         }
     }
+
+    public void PerderVidaEspecial()
+    {
+        vidas--;
+        vidas--;
+        AtualizarVidas(vidas);
+
+        if (vidas <= 0)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
+    }
 }

@@ -35,4 +35,5 @@ public class Projectile : MonoBehaviour
         // Aplica o offset para corrigir sprite apontado para a direita
         transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
+    
 }
