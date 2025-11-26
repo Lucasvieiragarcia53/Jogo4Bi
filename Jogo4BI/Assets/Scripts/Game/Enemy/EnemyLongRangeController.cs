@@ -20,6 +20,7 @@ public class EnemyLongRangeController : MonoBehaviour
     private Rigidbody2D rb;
     private bool canShoot = true;
     private bool takingDamage = false;
+    public bool coco;
 
     void Start()
     {
