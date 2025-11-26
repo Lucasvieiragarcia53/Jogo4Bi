@@ -331,6 +331,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.24102536, y: 0.16955929}
   m_EdgeRadius: 0
+--- !u!4 &249180001 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7423714884017615834, guid: 4a18664a0162445449a9990ff14e76be, type: 3}
+  m_PrefabInstance: {fileID: 8798657328340890480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &267787811 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5714029591148574353, guid: c13631e35eec800418e30015839cd42a, type: 3}
@@ -408,7 +413,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: df212000254327c43a1ff36376f31e89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -433,7 +438,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453927012}
-  m_BodyType: 1
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -807,7 +812,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -454.2, y: -241}
+  m_AnchoredPosition: {x: -855, y: 436}
   m_SizeDelta: {x: 99.8885, y: 36.4255}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861469908
@@ -981,7 +986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -12.5093, y: 507}
+  m_AnchoredPosition: {x: -12.5093, y: 895}
   m_SizeDelta: {x: 785.4636, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171576084
@@ -1195,10 +1200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3889,6 +3894,37 @@ Transform:
   m_Father: {fileID: 267787811}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1982086081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1982086082}
+  m_Layer: 0
+  m_Name: Fire Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1982086082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982086081}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0878, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 249180001}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1999516198
 GameObject:
   m_ObjectHideFlags: 0
@@ -4076,6 +4112,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5714029591148574356, guid: c13631e35eec800418e30015839cd42a, type: 3}
+      propertyPath: placar
+      value: 
+      objectReference: {fileID: 1211925757}
+    - target: {fileID: 5714029591148574356, guid: c13631e35eec800418e30015839cd42a, type: 3}
       propertyPath: weapon
       value: 
       objectReference: {fileID: 1670790819}
@@ -4135,6 +4175,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 249179988, guid: 4a18664a0162445449a9990ff14e76be, type: 3}
+      propertyPath: FirePoint
+      value: 
+      objectReference: {fileID: 1982086082}
+    - target: {fileID: 249179988, guid: 4a18664a0162445449a9990ff14e76be, type: 3}
       propertyPath: bulletSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -4156,6 +4200,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 52738361169623560, guid: 4a18664a0162445449a9990ff14e76be, type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 52738361169623560, guid: 4a18664a0162445449a9990ff14e76be, type: 3}
+      propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7423714884017615834, guid: 4a18664a0162445449a9990ff14e76be, type: 3}

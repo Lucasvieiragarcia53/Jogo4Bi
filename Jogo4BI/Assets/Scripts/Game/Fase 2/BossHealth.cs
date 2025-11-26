@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BossHealth : MonoBehaviour
 {
@@ -71,7 +72,7 @@ public class BossHealth : MonoBehaviour
 
     void Morrer()
     {
-        Debug.Log("O chefão foi derrotado!");
         Destroy(gameObject);
+        SceneManager.LoadScene("Menu");
     }
 }

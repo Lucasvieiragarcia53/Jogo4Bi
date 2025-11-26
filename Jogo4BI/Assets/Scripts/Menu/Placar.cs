@@ -32,7 +32,7 @@ public class Placar : MonoBehaviour
         // Verificar se o player morreu
         if (vidas <= 0)
         {
-            SceneManager.LoadScene("Menu"); 
+            SceneManager.LoadScene("Game Over"); 
         }
     }
 }

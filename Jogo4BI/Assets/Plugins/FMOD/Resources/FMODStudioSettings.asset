@@ -143,15 +143,15 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
-  - c88d16e5272a4e241b0ef0ac2e53b73d
   - fd7c55dab0fce234b8c25f6ffca523c1
-  - 2c5177b11d81d824dbb064f9ac8527da
-  - de700ef3f37a49b58a57ae3addf01ad9
-  - e7a046c753c3c3d4aacc91f6597f310d
-  - 52eb9df5db46521439908db3a29a1bbb
   - b7716510a1f36934c87976f3a81dbf3d
+  - 52eb9df5db46521439908db3a29a1bbb
   - 0f8eb3f400726694eb47beb1a9f94ce8
   - 46fbfdf3fc43db0458918377fd40293e
+  - c88d16e5272a4e241b0ef0ac2e53b73d
+  - e7a046c753c3c3d4aacc91f6597f310d
+  - de700ef3f37a49b58a57ae3addf01ad9
+  - 2c5177b11d81d824dbb064f9ac8527da
   - 2fea114e74ecf3c4f920e1d5cc1c4c40
   codecChannels:
     Value: []
@@ -632,8 +632,7 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks:
-  - Master
+  MasterBanks: []
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264
@@ -650,17 +649,17 @@ MonoBehaviour:
   HideSetupWizard: 1
   LastEventReferenceScanVersion: 131857
   Platforms:
-  - {fileID: 571058392114658755}
-  - {fileID: -7261438412576653532}
-  - {fileID: -3227678622054166646}
   - {fileID: -7633011376526442001}
-  - {fileID: 5451038137762291920}
-  - {fileID: 2106368610239003179}
-  - {fileID: -462219642782297144}
-  - {fileID: -5119089482763052176}
+  - {fileID: -7261438412576653532}
   - {fileID: -6678076672356344972}
+  - {fileID: -5119089482763052176}
   - {fileID: -5083054156039230588}
   - {fileID: -3461520619309240900}
+  - {fileID: -3227678622054166646}
+  - {fileID: -462219642782297144}
+  - {fileID: 571058392114658755}
+  - {fileID: 2106368610239003179}
+  - {fileID: 5451038137762291920}
   - {fileID: 6215022094199168732}
   MigratedPlatforms: 0c000000150000000b0000000a0000000900000012000000000000000800000005000000060000000200000001000000
 --- !u!114 &571058392114658755

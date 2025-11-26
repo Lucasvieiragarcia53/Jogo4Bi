@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
+    public float vidasMaximas = 5f;
     public GameObject bulletPrefab;
     public Transform firePoint;
     public Transform weapon;
@@ -15,6 +17,9 @@ public class PlayerController : MonoBehaviour
 
     private float fireTimer;
     private Vector2 lastDir = Vector2.right;
+
+    private Bullet bullet;
+    public Placar placar;
 
     void Update()
     {
@@ -106,5 +111,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("BulletEnemy"))
+        {
+
+            if (placar != null)
+            {
+                placar.PerderVida();
+            }
+            Destroy(other.gameObject);
+        }
+    }    
 }

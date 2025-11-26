@@ -14,6 +14,7 @@ public class EnemyControllerPhase2 : MonoBehaviour
 
     [Header("Feixe Especial")]
     public GameObject energyBeamPrefab; // Prefab do feixe de energia
+    public Transform FirePoint;
     public float beamDuration = 3f;     // Duração do feixe
     public float beamCooldown = 2f;     // Tempo antes de disparar o feixe
 
@@ -32,11 +33,11 @@ public class EnemyControllerPhase2 : MonoBehaviour
             fireTimer = 0f;
 
             // Sorteia número entre 1 e 10
-            int randomNum = Random.Range(1, 11);
+            int randomNum = Random.Range(1, 6);
             Debug.Log("Sorteio: " + randomNum);
 
-            // Se sair 5, soma; caso contrário, zera o contador
-            if (randomNum == 5)
+            // Se sair 5, soma;
+            if (randomNum >= 5)
                 specialCount++;
 
             // Quando sair três 5 seguidos, ativa o feixe
@@ -82,7 +83,7 @@ public class EnemyControllerPhase2 : MonoBehaviour
         Debug.Log("🔥 Feixe disparado!");
 
         // Instancia o feixe (ajuste a posição/rotação conforme o prefab)
-        GameObject beam = Instantiate(energyBeamPrefab, transform.position, transform.rotation);
+        GameObject beam = Instantiate(energyBeamPrefab, FirePoint.position, FirePoint.rotation  );
 
         // Mantém o feixe ativo por 3 segundos
         yield return new WaitForSeconds(beamDuration);
