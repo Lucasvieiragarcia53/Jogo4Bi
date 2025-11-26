@@ -10,23 +10,13 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 3f;
     private Vector2 direction;
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
+
+    public float rotationOffset = -90f; // <<< CORREÇÃO AQUI
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-
-        // Garantias de visibilidade
-        sr.enabled = true;
-        sr.color = new Color(1, 1, 1, 1);
-        transform.localScale = Vector3.one;
-        rb.gravityScale = 0;
-        rb.freezeRotation = true;
-
-        // Garante posição Z visível
-        Vector3 pos = transform.position;
-        transform.position = new Vector3(pos.x, pos.y, 0);
+        transform.localScale = new Vector3(0.15f, 0.15f, 1f);
     }
 
     void Start()
@@ -38,7 +28,10 @@ public class Projectile : MonoBehaviour
     public void SetDirection(Vector2 dir)
     {
         direction = dir.normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Aplica o offset para corrigir sprite apontado para a direita
+        transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 }

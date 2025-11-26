@@ -6,12 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
     public GameObject bulletPrefab;
-    public Transform firePoint;      // ponto de disparo (pos e rotação)
-    public Transform weapon;         // sprite/transform da arma (opcional)
+    public Transform firePoint;
+    public Transform weapon;
+
+    public Transform playerSprite;
+
     public float fireRate = 0.2f;
 
     private float fireTimer;
-    private Vector2 lastDir = Vector2.right; // direção atual/última direção usada para atirar
+    private Vector2 lastDir = Vector2.right;
 
     void Update()
     {
@@ -28,65 +31,69 @@ public class PlayerController : MonoBehaviour
         Vector3 input = new Vector3(h, v, 0f);
 
         if (input != Vector3.zero)
-        {
-            // Move
             transform.position += input.normalized * speed * Time.deltaTime;
 
-            // Escolhe direção dominante: horizontal ganha quando |h| >= |v|
-            if (Mathf.Abs(h) >= Mathf.Abs(v))
-            {
-                lastDir = (h > 0) ? Vector2.right : Vector2.left;
-            }
-            else
-            {
-                lastDir = (v > 0) ? Vector2.up : Vector2.down;
-            }
-        }
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            lastDir = Vector2.up;
+
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            lastDir = Vector2.down;
+
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            lastDir = Vector2.right;
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            lastDir = Vector2.left;
+
+        UpdatePlayerRotation();
+    }
+
+    void UpdatePlayerRotation()
+    {
+        if (lastDir == Vector2.up)
+            playerSprite.rotation = Quaternion.Euler(0, 0, 0);
+
+        else if (lastDir == Vector2.right)
+            playerSprite.rotation = Quaternion.Euler(0, 0, -90);
+
+        else if (lastDir == Vector2.left)
+            playerSprite.rotation = Quaternion.Euler(0, 0, 90);
+
+        else if (lastDir == Vector2.down)
+            playerSprite.rotation = Quaternion.Euler(0, 0, 180);
     }
 
     void Aim()
     {
         float zAngle = 0f;
 
-        // Mapeamento correto de ângulos para que transform.up do projétil aponte para a direção desejada
         if (lastDir == Vector2.right)
-        {
-            zAngle = -90f; // up -> right
-            if (weapon != null) weapon.localScale = new Vector3(1, 1, 1);
-        }
+            zAngle = -90f;
+
         else if (lastDir == Vector2.left)
-        {
-            zAngle = 90f;  // up -> left
-            if (weapon != null) weapon.localScale = new Vector3(-1, 1, 1); // espelha horizontalmente
-        }
+            zAngle = 90f;
+
         else if (lastDir == Vector2.up)
-        {
-            zAngle = 0f;   // up -> up
-            if (weapon != null) weapon.localScale = new Vector3(1, 1, 1);
-        }
-        else // down
-        {
-            zAngle = 180f; // up -> down
-            if (weapon != null) weapon.localScale = new Vector3(1, 1, 1);
-        }
+            zAngle = 0f;
+
+        else
+            zAngle = 180f;
 
         firePoint.rotation = Quaternion.Euler(0f, 0f, zAngle);
-
-        // se houver um objeto arma, faça com que acompanhe a rotação também
-        if (weapon != null)
-        {
-            weapon.rotation = firePoint.rotation;
-        }
+        if (weapon != null) weapon.rotation = firePoint.rotation;
     }
 
     void Shoot()
     {
         fireTimer += Time.deltaTime;
+
         if (Input.GetKey(KeyCode.Space) && fireTimer >= fireRate)
         {
             GameObject b = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            // garante que o projétil não herde flips indesejados do pai/arma
-            b.transform.localScale = Vector3.one;
+
+            // Envia a direção da última tecla apertada
+            b.GetComponent<Projectile>().SetDirection(lastDir);
+
             fireTimer = 0f;
         }
     }
