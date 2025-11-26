@@ -28,7 +28,7 @@ public class BeatManager : MonoBehaviour
 
     public enum HitQuality { Miss, Ok, Good, Perfect }
 
-    //público para acessar o beat atual de fora da classe
+    //acessar o beat atual de fora da classe
     public float GetCurrentBeat()
     {
         return _currentBeat;
@@ -36,13 +36,13 @@ public class BeatManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI(); //
+        UpdateUI();
     }
 
     private void Update()
     {
         // Calcula o beat atual baseado nos samples de áudio e BPM
-        // Fórmula: beat = (tempo em samples / frequência) / (60 / BPM)
+        //beat = (tempo em samples / frequência) / (60 / BPM)
         _currentBeat = (_audioSource.timeSamples / (_audioSource.clip.frequency * (60f / _bpm)));
 
         // Verifica cada intervalo definido para triggers
@@ -56,7 +56,7 @@ public class BeatManager : MonoBehaviour
         // Se a música terminou, carrega a próxima cena
         if (_audioSource != null && !_audioSource.isPlaying)
         {
-            SceneManager.LoadScene("Fase 2");;
+            SceneManager.LoadScene("Fase 2");
         }
     }
 

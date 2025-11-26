@@ -15,24 +15,25 @@ public class Player : MonoBehaviour
 
     // Novos campos para ataque
     public float attackRange = 1f; // Distância do ataque
-    public LayerMask enemyLayer; // Layer dos inimigos (configure no Inspector)
-    public Transform attackPoint; // Ponto de origem do ataque (ex.: frente do player)
+    public LayerMask enemyLayer; // Layer dos inimigos 
+    public Transform attackPoint; // Ponto de origem do ataque 
 
-    // Campo para animação de corrida (sem bounce)
-    public Animator animator; // Referência ao Animator do player 
+        public Animator animator; // Referência ao Animator do player 
 
-    // Novo: Referência ao Placar (arraste o objeto Placar no Inspector)
+    //Referência ao Placar 
     public Placar placar;
+
+    public GameObject KnifeSound;
+    public float attackAnimationDuration = 0.5f;
+
+    public GameObject JumpSound;
+    public float JumpAnimationDuration = 0.5f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Corrigido: Encontre o BeatManager na cena (assumindo que há apenas um)
+        // Encontre o BeatManager na cena
         Bm = FindObjectOfType<BeatManager>();
-        if (Bm == null)
-        {
-            Debug.LogError("BeatManager não encontrado na cena!");
-        }
 
         // Inicialização para animação
         if (animator != null)
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
                 // Ativar trigger de animação de pulo
                 if (animator != null)
                 {
-                    animator.SetTrigger("Jump"); // Chama a animação de pulo via trigger
+                    animator.SetTrigger("Jump"); // Chama a animação de pulo
                 }
                 BeatManager.HitQuality quality = Bm.GetHitQuality();
                 if (Bm != null && Bm.IsOnBeat())
@@ -77,7 +78,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Ataque só se estiver no beat (similar ao pulo)
+        // Ataque só se estiver no beat
         if (Input.GetKeyDown(KeyCode.K) && Bm != null && Bm.IsOnBeat())
         {
             Attack();
@@ -86,8 +87,11 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        // Corrigido: Aplicar jumpForce diretamente (sem multiplicar por Time.fixedDeltaTime, pois isso reduz o pulo drasticamente)
+        // Corrigido: Aplicar jumpForce diretamente
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        JumpSound.SetActive(true);
+
+        Invoke("DisableJumpSound", attackAnimationDuration);
     }
 
     void Move()
@@ -105,21 +109,26 @@ public class Player : MonoBehaviour
         jump = false;
     }
 
-    // Método de Ataque (combo reseta se miss OU se não acertar inimigo)
+    // Método de Ataque
     void Attack()
     {
         // Ativar trigger de animação de ataque
         if (animator != null)
         {
-            animator.SetTrigger("Attack"); // Chama a animação de ataque via trigger
+            animator.SetTrigger("Attack"); // Chama a animação de ataque
+            
         }
+
+        KnifeSound.SetActive(true);
+
+        Invoke("DisableKnifeSound", attackAnimationDuration);
 
         // Obter qualidade do hit primeiro
         BeatManager.HitQuality quality = Bm.GetHitQuality();
 
         // Detectar inimigos na área de ataque
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-        bool enemyHit = false; // Flag para saber se acertou algum inimigo
+        bool enemyHit = false; //saber se acertou algum inimigo
 
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -140,22 +149,35 @@ public class Player : MonoBehaviour
         {
             Bm.ResetCombo(); // Reseta combo se miss OU se não acertar inimigo
         }
+
+       
     }
 
-    // Desenhar gizmo para visualizar o alcance do ataque (no Editor)
+    void DisableKnifeSound()
+    {
+        KnifeSound.SetActive(false);
+    }
+
+        void DisableJumpSound()
+    {
+        JumpSound.SetActive(false);
+    }
+
+
+    // Desenhar gizmo para visualizar o alcance do ataque
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    // Integrado: Detectar colisão com chão (para isGrounded) e inimigos
+    // Detectar colisão com chão e inimigos
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            // Resetar trigger de pulo se necessário (opcional, para evitar loops)
+            // Resetar trigger de pulo se necessário 
             if (animator != null)
             {
                 animator.ResetTrigger("Jump");
@@ -183,7 +205,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Novo: Detectar saída de colisão com o chão
+    //Detectar saída de colisão com o chão
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
